@@ -14,17 +14,80 @@ class Person(Base):
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
+    date = Column(String(10), nullable=False)
+    email = Column(String(250), unique=True, nullable=False)
+    primaryPerson = relationship('primaryPerson', backref='person', lazy=True)
 
-class Address(Base):
-    __tablename__ = 'address'
+
+
+
+class Post(Base):
+    __tablename__ = 'post'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
+    type = Column(String(250), nullable=False)
+    date = Column(String(10), nullable=False)
+    primaryPost = relationship('primaryPost', backref='post', lazy=True)
     person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+
+
+    def to_dict(self):
+        return {}
+
+
+class Like(Base):
+    __tablename__ = 'like'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    date = Column(String(10), nullable=False)
+    post_id = Column(Integer, ForeignKey('post.id'))
+
+
+    def to_dict(self):
+        return {}
+
+
+class Comment(Base):
+    __tablename__ = 'comment'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    date = Column(String(10), nullable=False)
+    text = Column(String(1000), nullable=False)
+    post_id = Column(Integer, ForeignKey('post.id'))
+
+
+    def to_dict(self):
+        return {}
+
+
+class Share(Base):
+    __tablename__ = 'share'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    date = Column(String(10), nullable=False)
+    post_id = Column(Integer, ForeignKey('post.id'))
+    person_id_send = Column(Integer, ForeignKey('person.id'))
+    person_id_recieve = Column(Integer, ForeignKey('person.id'))
+
+
+    def to_dict(self):
+        return {}
+
+
+class Diect(Base):
+    __tablename__ = 'direct'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    date = Column(String(10), nullable=False)
+    text = Column(String(1000), nullable=False)
+    person_id_send = Column(Integer, ForeignKey('person.id'))
+    person_id_recieve = Column(Integer, ForeignKey('person.id'))
+
 
     def to_dict(self):
         return {}
